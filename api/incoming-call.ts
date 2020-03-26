@@ -23,7 +23,10 @@ export default function (req: express.Request, res: express.Response) {
 
   outgoingQueue.create(sid, fromNumber);
 
-  const callsInSeries = Math.min(config.callsInSeries, config.numbers.length);
+  const callsInSeries =
+    config.callsInSeries === 0
+      ? config.numbers.length
+      : Math.min(config.callsInSeries, config.numbers.length);
   for (let i = 0; i < callsInSeries; i++) {
     callNext(sid);
   }
