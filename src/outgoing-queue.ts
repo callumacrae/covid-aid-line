@@ -53,3 +53,7 @@ export function setOutgoingSid(sid: string, toNumber: string, toSid: string) {
 export function getRinging(sid: string): ToNumber[] {
   return store[sid].toNumbers.filter(({ status }) => status === 'calling');
 }
+
+export function remove(sid: string) {
+  delete store[sid];
+}

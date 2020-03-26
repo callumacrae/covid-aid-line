@@ -13,5 +13,7 @@ export default function (req: express.Request, res: express.Response) {
     ringing.forEach(({ callOutSid }) => {
       client.calls(callOutSid).update({ status: 'completed' });
     });
+
+    outgoingQueue.remove(sid);
   }
 }
