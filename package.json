@@ -1,0 +1,41 @@
+{
+  "name": "covid-aid-line",
+  "scripts": {
+    "start": "node -r ts-node/register ./src/server",
+    "start:dev": "nodemon"
+  },
+  "author": "Callum Macrae <callum@macr.ae>",
+  "license": "MIT",
+  "prettier": {
+    "singleQuote": true
+  },
+  "devDependencies": {
+    "@now/node": "^1.5.0",
+    "@types/express": "^4.17.3",
+    "@types/node": "^12.12.31",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write"
+  },
+  "nodemonConfig": {
+    "exec": "npm start",
+    "ext": "ts"
+  },
+  "dependencies": {
+    "dotfiles": "^0.8.0",
+    "twilio": "^3.41.1"
+  }
+}
