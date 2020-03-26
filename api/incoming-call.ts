@@ -14,7 +14,12 @@ export default function (req: express.Request, res: express.Response) {
   const response = new VoiceResponse();
 
   response.say('entering queue');
-  response.enqueue(sid);
+  response.enqueue(
+    {
+      action: 'http://callum.ngrok.io/incoming-call-action',
+    },
+    sid
+  );
 
   outgoingQueue.create(sid, fromNumber);
 

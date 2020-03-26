@@ -2,13 +2,15 @@ import config from '../config';
 
 type callStatus = 'new' | 'calling' | 'failed';
 
-interface CallInfo {
+export interface ToNumber {
+  number: string;
+  status: callStatus;
+  callOutSid?: string;
+}
+
+export interface CallInfo {
   fromNumber: string;
-  toNumbers: {
-    number: string;
-    status: callStatus;
-    callOutSid?: string;
-  }[];
+  toNumbers: ToNumber[];
 }
 
 const store: { [sid: string]: CallInfo } = {};
@@ -47,6 +49,7 @@ export function setOutgoingSid(sid: string, toNumber: string, toSid: string) {
   get(sid, toNumber).callOutSid = toSid;
 }
 
-export function anyRinging(sid: string): boolean {
-  return store[sid].toNumbers.some(({ status }) => status === 'calling');
+// @todo refactor this awful mess
+export function getRinging(sid: string): ToNumber[] {
+  return store[sid].toNumbers.filter(({ status }) => status === 'calling');
 }

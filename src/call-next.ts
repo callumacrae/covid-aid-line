@@ -3,14 +3,14 @@ import twilio from 'twilio';
 import config from '../config';
 import * as outgoingQueue from '../src/outgoing-queue';
 
-const client = twilio(config.twilioAccountSid, config.twilioAuthToken);
+import client from './twilio-client'
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 function callNext(sid: string) {
   const number = outgoingQueue.getNext(sid);
 
   if (!number) {
-    if (!outgoingQueue.anyRinging(sid)) {
+    if (!outgoingQueue.getRinging(sid)) {
       // todo: send a text to everyone requesting a callback
       console.log('Call was ignored');
 
