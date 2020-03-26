@@ -22,4 +22,5 @@ export default function (req: express.Request, res: express.Response) {
 
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(response.toString());
+
 }

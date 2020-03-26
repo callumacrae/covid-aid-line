@@ -4,16 +4,23 @@ import config from '../src/config';
 import * as outgoingQueue from '../src/outgoing-queue';
 
 const client = twilio(config.twilioAccountSid, config.twilioAuthToken);
+const VoiceResponse = twilio.twiml.VoiceResponse;
 
 function callNext(sid: string) {
   const number = outgoingQueue.getNext(sid);
 
   if (!number) {
-    console.log('Call was ignored');
-    // todo: make this work
-    client
-      .calls(sid)
-      .update({ twiml: '<Response><Say>Nope sorry</Say></Response>' });
+    if (!outgoingQueue.anyRinging(sid)) {
+      // todo: send a text to everyone requesting a callback
+      console.log('Call was ignored');
+
+      const response = new VoiceResponse();
+      response.say(
+        'Sorry, nobody is available to answer your call at the moment. We will call you back as soon as possible.'
+      );
+
+      client.calls(sid).update({ twiml: response.toString() });
+    }
     return;
   }
 
@@ -25,7 +32,6 @@ function callNext(sid: string) {
       to: number,
     })
     .then((call) => {
-      console.log('outgoing sid', call.sid);
       outgoingQueue.setOutgoingSid(sid, number, call.sid);
       console.log(`Placing call to ${number}`);
     })

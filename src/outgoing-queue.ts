@@ -46,3 +46,7 @@ export function getNext(sid: string): string | false {
 export function setOutgoingSid(sid: string, toNumber: string, toSid: string) {
   get(sid, toNumber).callOutSid = toSid;
 }
+
+export function anyRinging(sid: string): boolean {
+  return store[sid].toNumbers.some(({ status }) => status === 'calling');
+}
