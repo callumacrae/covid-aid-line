@@ -16,7 +16,6 @@ export default function (req: express.Request, res: express.Response) {
   if (answeredBy === 'human') {
     response.say('Connecting');
     const dial = response.dial();
-    console.log('QUEUE', sid)
     dial.queue(sid);
   } else {
     response.say(

@@ -13,7 +13,6 @@ export default function (req: express.Request, res: express.Response) {
   const response = new VoiceResponse();
 
   response.say('entering queue');
-  console.log('ENQUEUE', sid);
   response.enqueue(sid);
 
   outgoingQueue.create(sid, fromNumber);
