@@ -7,6 +7,7 @@ interface CallInfo {
   toNumbers: {
     number: string;
     status: callStatus;
+    callOutSid?: string;
   }[];
 }
 
@@ -22,13 +23,26 @@ export function create(sid: string, fromNumber: string) {
   };
 }
 
-export function markFailed(sid: string, toNumber: string) {
-  const toNumberObj = store[sid].toNumbers.find(
-    ({ number }) => toNumber === number
-  );
-  toNumberObj.status = 'failed';
+function get(sid: string, toNumber: string) {
+  return store[sid].toNumbers.find(({ number }) => toNumber === number);
 }
 
-export function getNext(sid: string): string {
-  return store[sid].toNumbers.find(({ status }) => status === 'new').number;
+export function markFailed(sid: string, toNumber: string) {
+  get(sid, toNumber).status = 'failed';
+}
+
+export function getNext(sid: string): string | false {
+  const toNumberObj = store[sid].toNumbers.find(
+    ({ status }) => status === 'new'
+  );
+  if (!toNumberObj) {
+    return false;
+  }
+
+  toNumberObj.status = 'calling';
+  return toNumberObj.number;
+}
+
+export function setOutgoingSid(sid: string, toNumber: string, toSid: string) {
+  get(sid, toNumber).callOutSid = toSid;
 }
