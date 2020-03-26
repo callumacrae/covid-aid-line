@@ -1,6 +1,6 @@
 import config from '../config';
 
-type callStatus = 'new' | 'calling' | 'failed';
+type callStatus = 'new' | 'calling' | 'answered' | 'failed';
 
 export interface ToNumber {
   number: string;
@@ -31,6 +31,10 @@ function get(sid: string, toNumber: string) {
 
 export function markFailed(sid: string, toNumber: string) {
   get(sid, toNumber).status = 'failed';
+}
+
+export function markAnswered(sid: string, toNumber: string) {
+  get(sid, toNumber).status = 'answered';
 }
 
 export function getNext(sid: string): string | false {

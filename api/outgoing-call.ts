@@ -3,6 +3,7 @@ import twilio from 'twilio';
 
 import * as outgoingQueue from '../src/outgoing-queue';
 import callNext from '../src/call-next';
+import client from '../src/twilio-client';
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
@@ -17,6 +18,14 @@ export default function (req: express.Request, res: express.Response) {
     response.say('Connecting');
     const dial = response.dial();
     dial.queue(sid);
+
+    outgoingQueue.markAnswered(sid, toNumber);
+
+    const ringing = outgoingQueue.getRinging(sid);
+
+    ringing.forEach(({ callOutSid }) => {
+      client.calls(callOutSid).update({ status: 'completed' });
+    });
   } else {
     response.say(
       answeredBy === 'unknown'
