@@ -3,7 +3,7 @@ import twilio from 'twilio';
 
 import * as outgoingQueue from '../src/outgoing-queue';
 import callNext from '../src/call-next';
-import config from '../src/config';
+import config from '../config';
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 

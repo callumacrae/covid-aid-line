@@ -1,6 +1,6 @@
 import twilio from 'twilio';
 
-import config from '../src/config';
+import config from '../config';
 import * as outgoingQueue from '../src/outgoing-queue';
 
 const client = twilio(config.twilioAccountSid, config.twilioAuthToken);
