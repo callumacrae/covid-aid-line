@@ -3,6 +3,7 @@ import twilio from 'twilio';
 
 import * as outgoingQueue from '../src/outgoing-queue';
 import callNext from '../src/call-next';
+import config from '../src/config';
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
@@ -17,10 +18,11 @@ export default function (req: express.Request, res: express.Response) {
 
   outgoingQueue.create(sid, fromNumber);
 
-  // todo: call more than one at a time
-  callNext(sid);
+  const callsInSeries = Math.min(config.callsInSeries, config.numbers.length);
+  for (let i = 0; i < callsInSeries; i++) {
+    callNext(sid);
+  }
 
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(response.toString());
-
 }
